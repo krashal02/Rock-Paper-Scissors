@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rock Paper Scissors</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>Rock Paper Scissors</h1>
+
+    <div class="choices" role="group" aria-label="Make your choice">
+      <button class="choice-btn" data-choice="rock" aria-label="Rock">✊<span>Rock</span></button>
+      <button class="choice-btn" data-choice="paper" aria-label="Paper">🖐️<span>Paper</span></button>
+      <button class="choice-btn" data-choice="scissors" aria-label="Scissors">✌️<span>Scissors</span></button>
+    </div>
+
+    <p class="result" aria-live="polite"></p>
+    <p class="progress">Round: <span id="round">0</span> / 5</p>
+    <p class="scoreboard">Score — You: <span id="playerScore">0</span> | Computer: <span id="computerScore">0</span></p>
+  </main>
+
+  <div id="winnerOverlay" class="overlay" aria-modal="true" role="dialog" style="display:none;">
+    <div class="overlay-content">
+      <h2 id="winnerText"></h2>
+      <button id="playAgainBtn">Play Again</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
