@@ -6,11 +6,17 @@ const computerScoreEl = document.getElementById("computerScore");
 const winnerOverlay = document.getElementById("winnerOverlay");
 const winnerText = document.getElementById("winnerText");
 const playAgainBtn = document.getElementById("playAgainBtn");
+const clickSound = document.getElementById("click-sound");
 
 let playerScore = 0;
 let computerScore = 0;
 let roundsPlayed = 0;
 const totalRounds = 5;
+
+function playClickSound() {
+  clickSound.currentTime = 0;
+  clickSound.play();
+}
 
 function computerPlay() {
   const choices = ["rock", "paper", "scissors"];
@@ -19,7 +25,6 @@ function computerPlay() {
 
 function determineWinner(player, computer) {
   if (player === computer) return "tie";
-
   if (
     (player === "rock" && computer === "scissors") ||
     (player === "paper" && computer === "rock") ||
@@ -42,13 +47,8 @@ function updateUI(result, playerChoice, computerChoice) {
   else msg += "😐 It's a tie!";
 
   resultEl.textContent = msg;
-  if (result === "win") {
-    resultEl.style.color = "#66ff99";
-  } else if (result === "lose") {
-    resultEl.style.color = "#ff6666";
-  } else {
-    resultEl.style.color = "#ffd54f"; 
-  }
+  resultEl.style.color = result === "win" ? "#66ff99" :
+                         result === "lose" ? "#ff6666" : "#ffd54f";
 
   playerScoreEl.textContent = playerScore;
   computerScoreEl.textContent = computerScore;
@@ -57,7 +57,6 @@ function updateUI(result, playerChoice, computerChoice) {
 
 function checkGameEnd() {
   if (roundsPlayed === totalRounds) {
-   
     let finalMsg = "";
     if (playerScore > computerScore) {
       finalMsg = `🎉 You won the game!\nFinal score: ${playerScore} - ${computerScore}`;
@@ -69,13 +68,12 @@ function checkGameEnd() {
 
     winnerText.textContent = finalMsg;
     winnerOverlay.style.display = "flex";
-
-    
     buttons.forEach((btn) => (btn.disabled = true));
   }
 }
 
 function resetGame() {
+  playClickSound();
   playerScore = 0;
   computerScore = 0;
   roundsPlayed = 0;
@@ -87,8 +85,10 @@ function resetGame() {
   buttons.forEach((btn) => (btn.disabled = false));
 }
 
+// Button click event for game choices
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
+    playClickSound();
     const playerChoice = button.getAttribute("data-choice");
     const computerChoice = computerPlay();
     const result = determineWinner(playerChoice, computerChoice);
@@ -101,11 +101,11 @@ buttons.forEach((button) => {
       updateUI(result, playerChoice, computerChoice);
       checkGameEnd();
     } else {
-      
       resultEl.textContent = `Both chose ${capitalize(playerChoice)}. It's a tie! No round counted.`;
       resultEl.style.color = "#ffd54f";
     }
   });
 });
 
+// Play again button
 playAgainBtn.addEventListener("click", resetGame);
